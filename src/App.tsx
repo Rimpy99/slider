@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BsArrowLeftSquare, BsArrowRightSquare } from "react-icons/bs";
 import './App.css';
+
+const ArrowLeft = motion(BsArrowLeftSquare);
+const ArrowRight = motion(BsArrowRightSquare);
 
 const slideContentVariants = {
   hidden: {
@@ -14,7 +18,7 @@ const slideContentVariants = {
       type: "spring",
       stiffness: 120,
       duration: 1,
-      delay: .5,
+      delay: .8,
     },
   }
 }
@@ -27,6 +31,26 @@ const slideContentExitAnimation = {
     stiffness: 120,
     duration: 1,
   }
+}
+
+const arrowButtonsVariants = {
+  hidden: {
+    opacity: 0,
+    y: -30,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+  }
+}
+
+const arrowButtonsExitAnimation = {
+  y: -30,
+  opacity: 0,
+}
+
+const arrowButtonsHoverAnimations = {
+  scale: 1.25,
 }
 
 const App: React.FC = () => {
@@ -101,8 +125,30 @@ const App: React.FC = () => {
             </div>
           </div>
       </div>
-      {x===0 ? null :  <button className="btn-left" onClick={goLeft}>Left</button>}
-      {x===-300 ? null : <button className="btn-right" onClick={goRight}>Right</button>}
+      <AnimatePresence>
+        {x!==0 && 
+        <motion.div 
+          className="btn-left btn" 
+          variants={arrowButtonsVariants} 
+          initial="hidden" 
+          animate="visible"
+          whileHover={arrowButtonsHoverAnimations} 
+          exit={arrowButtonsExitAnimation}>
+            <ArrowLeft size="40" onClick={goLeft}/>
+        </motion.div>}
+      </AnimatePresence>
+      <AnimatePresence>
+        {x!==-300 && 
+        <motion.div 
+          className="btn-right btn" 
+          variants={arrowButtonsVariants} 
+          initial="hidden" 
+          animate="visible"
+          whileHover={arrowButtonsHoverAnimations} 
+          exit={arrowButtonsExitAnimation}>
+            <ArrowRight size="40" onClick={goRight}/>
+        </motion.div>}
+      </AnimatePresence>
     </div>
   );
 }
